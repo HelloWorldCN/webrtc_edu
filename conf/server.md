@@ -1,3 +1,4 @@
+## 搭建一个简单的信令服务器
 # 本节内容
 1.使用node.js编写简单的的webrtc信令服务器能够完成视频通话
 
@@ -23,8 +24,8 @@ Node.js中文网下载链接: http://nodejs.cn/download/;
 基于Socket.IO的设计, 将其用作消息服务简单又直接。 Socket.IO 非常适合用于学习WebRTC信令, 因为其内置了 “聊天室”(rooms) 这个概念。  
 Node.js程序主要做两件事情：  
 1.作为消息中继服务器  
-2.管理WebRTC视频聊天室
-
+2.管理WebRTC视频聊天室  
+代码非常简单，总共大约就70行。
 ```
 var os = require('os');
 var nodeStatic = require('node-static');
@@ -83,7 +84,7 @@ io.sockets.on('connection', function(socket) {
 ```
 
 # 网页
-如果只是为了测试我们的信令服务器能否完成功能，网页的可以设计的很简单： 主要包含两部分：html文件和js文件.一下给出html文件源码main.js的代码文件放在本目录下code文件夹中01文件夹下
+如果只是为了测试我们的信令服务器能否完成功能，网页的可以设计的很简单： 主要包含两部分：html文件和js文件.以下给出html文件代码，main.js的代码文件放在本目录下code文件夹中01文件夹下
 
 index.html文件：
 
