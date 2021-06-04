@@ -8,7 +8,7 @@
 ## 检查安装是否成功：
 ###### 在CMD命令输入node –v 后回车查看返回值
 ###### 在CMD命令输入npm –v 后回车查看返回值
-![1.png](https://www.hualigs.cn/image/6098a29d3024b.jpg)
+![1.png](https://github.com/HelloWorldCN/webrtc_edu/blob/master/images/03.png?raw=true)
 
  如上图为安装成功
 
