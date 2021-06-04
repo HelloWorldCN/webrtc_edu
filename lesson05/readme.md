@@ -98,6 +98,6 @@ localPeerConnection.addStream(localStream);
 ## 效果展示
 打开code中index页面，点击按钮start就会获取本地桌面，点击call就能够建立远程桌面共享。效果如下图：
 
-![image](https://www.hualigs.cn/image/60b87e5f22b08.jpg)
+![image](https://github.com/HelloWorldCN/webrtc_edu/blob/master/images/05.png?raw=true)
 ## 本章小结
 基于WebRTC实现桌面共享，逻辑上和建立视频通话是一样的，原理也是相同，都是建立一个对等连接，将获取到的媒体信息放入传输通道中， 区别只是在获取本地媒体流的模块。
