@@ -174,3 +174,5 @@ function onIceCandidate(pc, event) {
 ![image](https://ftp.bmp.ovh/imgs/2021/06/ccd0483dc4384c99.png)
 ## 总结
 在本节中主要是通过通过webrtc来实现canvas画布画面的传输，其本质上和webrtc的视频通话没有区别，但是本节设计3d模型和和展现方式都十分简单，感兴趣的可以尝试使用Three.js来绘制3d模型，甚至加入标记识别来展示不同模型。
+### 注意
+这部分代码展示只能在服务器上运行，因为使用网页加载某些时在本地会产生跨域问题，所以需启动web服务。
