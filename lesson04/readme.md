@@ -114,7 +114,7 @@ RTCDataChannel 其提供了 send() 方法与 message 事件, 使用的语法和 
 ## 效果展示
 左边的文本框之中输入一些字符,
 点击 Send 按钮, 将文本通过 WebRTC 的数据通道传送出去。  
-[![2MMESP.png](https://z3.ax1x.com/2021/06/02/2MMESP.png)](https://imgtu.com/i/2MMESP)
+[![2MMESP.png](https://github.com/HelloWorldCN/webrtc_edu/blob/master/images/04.png?raw=true)
 # 总结
 在本节课程中, 我们学习了:
 
