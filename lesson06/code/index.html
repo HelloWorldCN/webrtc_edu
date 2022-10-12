@@ -7,13 +7,14 @@
  *  tree.
 -->
 <html>
+
 <head>
 
     <meta charset="utf-8">
     <meta name="description" content="WebRTC code samples">
     <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=1">
     <meta itemprop="description" content="Client-side WebRTC code samples">
-    <meta itemprop="image" content="../../../images/webrtc-icon-192x192.png">
+    
     <meta itemprop="name" content="WebRTC code samples">
     <meta name="mobile-web-app-capable" content="yes">
     <meta id="theme-color" name="theme-color" content="#ffffff">
@@ -22,40 +23,37 @@
 
     <title>Canvas to peer connection</title>
 
-    <link rel="icon" sizes="192x192" href="../../../images/webrtc-icon-192x192.png">
+    
     <link href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="../../../css/main.css"/>
-    <link rel="stylesheet" href="css/main.css"/>
+    
+    <link rel="stylesheet" href="css/main.css" />
 
 </head>
 
 <body>
 
-<div id="container">
+    <div id="container">
 
-    <h1>
-        WebRTC 展示AR物品
-    </h1>
+        <h1>
+            WebRTC 展示AR物品
+        </h1>
+        <canvas></canvas>
+        <video playsinline autoplay muted></video>
 
-    <canvas></canvas>
-    <video playsinline autoplay muted></video>
 
+
+    </div>
+
+    <script src="three.min.js"></script>
+    <script src="GLTFLoader.js"></script>
+    <script src="OrbitControls.js"></script>
+    <script src="loadModel.js"></script>
+
+    <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+
+    <script src="js/main.js"></script>
 
     
-</div>
-
-<!-- Teapot code -->
-<script src="webgl-utils.js"></script>
-<script src="webgl-debug.js"></script>
-<script src="matrix4x4.js"></script>
-<script src="cameracontroller.js"></script>
-<script src="teapot-streams.js"></script>
-<script src="demo.js"></script>
-
-<script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
-
-<script src="js/main.js" async></script>
-
-<script src="../../../js/lib/ga.js"></script>
 </body>
+
 </html>

@@ -10,6 +10,9 @@
 
 'use strict';
 
+// Call initModel() in demo.js, 定义webgl相关变量
+initModel();
+
 const canvas = document.querySelector('canvas');
 const video = document.querySelector('video');
 
@@ -22,7 +25,7 @@ const offerOptions = {
 
 let startTime;
 
-video.addEventListener('loadedmetadata', function() {
+video.addEventListener('loadedmetadata', function () {
   console.log(`Remote video videoWidth: ${this.videoWidth}px,  videoHeight: ${this.videoHeight}px`);
 });
 
@@ -36,9 +39,6 @@ video.onresize = () => {
     startTime = null;
   }
 };
-
-// Call main() in demo.js
-main();
 
 const stream = canvas.captureStream();
 console.log('Got stream from canvas');
@@ -68,12 +68,12 @@ function call() {
   pc2.ontrack = gotRemoteStream;
 
   stream.getTracks().forEach(
-      track => {
-        pc1.addTrack(
-            track,
-            stream
-        );
-      }
+    track => {
+      pc1.addTrack(
+        track,
+        stream
+      );
+    }
   );
   console.log('Added local stream to pc1');
 
@@ -127,10 +127,10 @@ function onCreateAnswerSuccess(desc) {
 
 function onIceCandidate(pc, event) {
   getOtherPc(pc).addIceCandidate(event.candidate)
-      .then(
-          () => onAddIceCandidateSuccess(pc),
-          err => onAddIceCandidateError(pc, err)
-      );
+    .then(
+      () => onAddIceCandidateSuccess(pc),
+      err => onAddIceCandidateError(pc, err)
+    );
   console.log(`${getName(pc)} ICE candidate: ${event.candidate ? event.candidate.candidate : '(null)'}`);
 }
 

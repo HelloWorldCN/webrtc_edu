@@ -14,10 +14,53 @@ const stream = canvas.captureStream();
 ```
 上述代码中stream就是canvas画布捕获到的视频流。
 ## 使用canvans绘制一个3D模型
+### 初始化3D模型
+在网页中要实现3D效果主要靠使用webgl封装运行的三维引擎，在所有WebGL引擎中，Three.js是国内文资料最多、使用最广泛的三维引擎。本部分便会使用three.js绘制并展示一个3D模型，然后通过webrtc将其传输到另一个播放端。
+- 首先我们需要初始化场景、一个渲染器和一个摄像机
+```
+scene = new THREE.Scene();
+scene.background = new THREE.Color(0xfffff0);
+
+renderer = new THREE.WebGLRenderer({ canvas: c, antialias: true });
+renderer.setSize(width, height);
+
+const aspect = width / height;//纵横比
+camera = new THREE.PerspectiveCamera(1100, aspect, 1, 10);//视距
+camera.position.set(0, 0, 2);
+
+const ambientLight = new THREE.AmbientLight(0xaaaaaa, 3);
+scene.add(ambientLight);//添加环绕光
+```
+- 然后使用加载器加载模型
+```
+const loader = new THREE.GLTFLoader();
+loader.load("3DSrc/chinese_knot/scene.gltf", (result) => {
+    result.scene.scale.set(0.2, 0.2, 0.2);
+    scene.add(result.scene);
+}, undefined, (error) => {
+    console.error(error);
+});
+```
+- 初始化完成后，为了能够让模型根据鼠标的拖拽做出响应，还需要给摄像机加入旋转控制
+```
+const controls = new THREE.OrbitControls(camera, renderer.domElement);
+controls.addEventListener("changed", renderer);
+```
+- 最后渲染画面
+```
+const animate = () => {
+    requestAnimationFrame(animate);
+    renderer.render(scene, camera);
+};
+animate();
+# requestAnimationFrame()是浏览器window对象的方法,参数是将要被调用函数的函数名;
+# requestAnimationFrame()调用一个函数不是立即调用而是向浏览器发起一个执行某函数的请求， 什么时候会执行由浏览器决定，一般默认保持60FPS的频率
+```
 ### html页面
 html页面只需要要创建一个canvas标签，和两个展示video的标签即可：
 
 ```
+<!DOCTYPE html>
 <html>
 <head>
 
@@ -36,44 +79,45 @@ html页面只需要要创建一个canvas标签，和两个展示video的标签�
 
     <link rel="icon" sizes="192x192" href="../../../images/webrtc-icon-192x192.png">
     <link href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="../../../css/main.css"/>
-    <link rel="stylesheet" href="css/main.css"/>
+    <link rel="stylesheet" href="../../../css/main.css" />
+    <link rel="stylesheet" href="css/main.css" />
 
 </head>
 
 <body>
 
-<div id="container">
+    <div id="container">
 
-    <h1>
-        <a href="//webrtc.github.io/samples/" title="WebRTC samples homepage">WebRTC samples</a>
+        <h1>
+            WebRTC 展示AR物品
+        </h1>
+        <canvas></canvas>
+        <video playsinline autoplay muted></video>
 
-    <canvas></canvas>
-    <video playsinline autoplay muted></video>
-    <p>View the browser console to see logging.</p>
+    </div>
 
-    <p>Several variables are in global scope, so you can inspect them from the console: <code>canvas</code>,
-        <code>video</code>, <code>localPeerConnection</code>, <code>remotePeerConnection</code> and <code>stream</code>.
-    </p>
+    <script src="three.min.js"></script>
+    <script src="GLTFLoader.js"></script>
+    <script src="OrbitControls.js"></script>
 
-</div>
+    <script src="webgl-utils.js"></script>
+    <script src="webgl-debug.js"></script>
+    <script src="matrix4x4.js"></script>
+    <script src="cameracontroller.js"></script>
+    <script src="teapot-streams.js"></script>
+    <script src="demo.js"></script>
 
-<!-- Teapot code -->
-<script src="3D/webgl_teapot/webgl-utils.js"></script>
-<script src="3D/webgl_teapot/webgl-utils.js"></script>
-<script src="3D/webgl_teapot/matrix4x4.js"></script>
-<script src="3D/webgl_teapot/cameracontroller.js"></script>
-<script src="3D/webgl_teapot/teapot-streams.js"></script>
-<script src="3D/webgl_teapot/demo.js"></script>
+    <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
 
-<script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+    <script src="js/main.js"></script>
 
-<script src="js/main.js" async></script>
-
+    <script src="../../../js/lib/ga.js"></script>
 </body>
+
 </html>
 ```
-html页面teapot-streams.js、webgl-utils.js、webgl-utils.js等js文件便是本节中3D模型设计的代码具体在code中3D文件夹中，[该3D模型的代码来自webrtc官方simple](https://webrtc.github.io/samples/)，在这里就不做过多的描述。  
+html页面three.min.js、GLTFLoader.js、OrbitControls.js等js文件便是本节中3D模型设计的代码具体在code中3D文件夹中，[3D模型资源来自https://sketchfab.com/]，在这里就不做过多的描述。 
+
 ## 建立peer connection
 在本节中将建立两个peerconnection，一个代表本地，另一个代表远程。
 ```
@@ -169,10 +213,9 @@ function onIceCandidate(pc, event) {
 
 ```
 完整代码在code中js文件夹中
+
 ## 效果展示
 打开code文件中的index页面，会出现两个两个video元素，左边的代表本地，右边代表从canvas到传输过去的画面，当我们拖动左边的模型时，右边的也会随之改变。  
-![image](https://github.com/HelloWorldCN/webrtc_edu/blob/master/images/06.png?raw=true)
+![image](./code6/image/example.png)
 ## 总结
-在本节中主要是通过通过webrtc来实现canvas画布画面的传输，其本质上和webrtc的视频通话没有区别，但是本节设计3d模型和和展现方式都十分简单，感兴趣的可以尝试使用Three.js来绘制3d模型，甚至加入标记识别来展示不同模型。
-### 注意
-这部分代码展示只能在服务器上运行，因为使用网页加载某些时在本地会产生跨域问题，所以需启动web服务。
+在本节中主要是通过通过webrtc来实现canvas画布画面的传输，其本质上和webrtc的视频通话没有区别，但是本节设计3d模型和和展现方式都十分简单，感兴趣的可以尝试使用Three.js来绘制更加复杂多样的3d模型，甚至加入标记识别来展示不同模型。
