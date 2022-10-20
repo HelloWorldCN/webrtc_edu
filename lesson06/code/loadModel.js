@@ -36,6 +36,7 @@ function initModel() {
         console.error(error);
     });
 
+    //回调函数，循环渲染模型
     const animate = () => {
         requestAnimationFrame(animate);
         renderer.render(scene, camera);

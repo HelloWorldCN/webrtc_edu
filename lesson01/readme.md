@@ -144,7 +144,8 @@ node index.js
 ```
 服务器启动完成后, 请打开浏览器, 输入地址, 如: http://localhost:8080。
 
-然后继续打开第二个标签页/新窗口, 输入地址: http://localhost:8080。 则页面中会显示两个video元素, 第一个展示 getUserMedia() 获取到的本地视频,第二个则展示 RTCPeerconnection 传输过来的远程视频。
+然后继续打开第二个标签页/新窗口, 输入地址: http://localhost:8080。 则页面中会显示两个video元素, 第一个展示 getUserMedia() 获取到的本地视频,第二个则展示 RTCPeerconnection 传输过来的远程视频，运行结果如图所示。
+![Image text](https://github.com/HelloWorldCN/webrtc_edu/blob/master/images/01.png)
 
 因为程序逻辑简单, 如果刷新或者关闭了客户端标签页, 则需要重启 Node.js 才能继续使用。
 # 小结

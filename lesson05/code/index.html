@@ -10,15 +10,21 @@
   <h1>Realtime communication with WebRTC</h1>
 
   <video id="localVideo" autoplay playsinline></video>
+  <!--显示本地屏幕内容-->
   <video id="remoteVideo" autoplay playsinline></video>
+  <!--显示远程接收到的内容-->
 
   <div>
     <button id="startButton">Start</button>
+    <!--获取本地屏幕内容-->
     <button id="callButton">Call</button>
+    <!--发送给远程-->
     <button id="hangupButton">Hang Up</button>
+    <!--结束会话-->
   </div>
 
   <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
   <script src="js/main.js"></script>
 </body>
+
 </html>

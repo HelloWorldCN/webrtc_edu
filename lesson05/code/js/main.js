@@ -1,24 +1,18 @@
 'use strict';
 
-// Set up media stream constant and parameters.
-
-// In this codelab, you will be streaming video only: "video: true".
-// Audio will not be streamed because it is set to "audio: false" by default.
+//只获取视频内容，不获取音频内容
 const mediaStreamConstraints = {
   video: true,
 };
 
-// Set up to exchange only video.
 const offerOptions = {
   offerToReceiveVideo: 1,
 };
 
-// Define initial start time of the call (defined as connection between peers).
 let startTime = null;
 
-// Define peer connections, streams and video elements.
-const localVideo = document.getElementById('localVideo');
-const remoteVideo = document.getElementById('remoteVideo');
+const localVideo = document.getElementById('localVideo'); //本地视频
+const remoteVideo = document.getElementById('remoteVideo'); //远程视频
 
 let localStream;
 let remoteStream;
@@ -27,9 +21,7 @@ let localPeerConnection;
 let remotePeerConnection;
 
 
-// Define MediaStreams callbacks.
-
-// Sets the MediaStream as the video element src.
+//显示本地视频
 function gotLocalMediaStream(mediaStream) {
   localVideo.srcObject = mediaStream;
   localStream = mediaStream;
@@ -37,12 +29,11 @@ function gotLocalMediaStream(mediaStream) {
   callButton.disabled = false;  // Enable call button.
 }
 
-// Handles error by logging a message to the console.
 function handleLocalMediaStreamError(error) {
   trace(`navigator.getUserMedia error: ${error.toString()}.`);
 }
 
-// Handles remote MediaStream success by adding it as the remoteVideo src.
+//显示远程视频
 function gotRemoteMediaStream(event) {
   const mediaStream = event.stream;
   remoteVideo.srcObject = mediaStream;
@@ -50,18 +41,14 @@ function gotRemoteMediaStream(event) {
   trace('Remote peer connection received remote stream.');
 }
 
-
-// Add behavior for video streams.
-
-// Logs a message with the id and size of a video element.
+//视频大小
 function logVideoLoaded(event) {
   const video = event.target;
   trace(`${video.id} videoWidth: ${video.videoWidth}px, ` +
-        `videoHeight: ${video.videoHeight}px.`);
+    `videoHeight: ${video.videoHeight}px.`);
 }
 
-// Logs a message with the id and size of a video element.
-// This event is fired when video begins streaming.
+//视频改变
 function logResizedVideo(event) {
   logVideoLoaded(event);
 
@@ -72,14 +59,11 @@ function logResizedVideo(event) {
   }
 }
 
-localVideo.addEventListener('loadedmetadata', logVideoLoaded);
+localVideo.addEventListener('loadedmetadata', logVideoLoaded); //视频内容监听事件
 remoteVideo.addEventListener('loadedmetadata', logVideoLoaded);
 remoteVideo.addEventListener('onresize', logResizedVideo);
 
-
-// Define RTC peer connection behavior.
-
-// Connects with new peer candidate.
+//创建RTC连接
 function handleConnection(event) {
   const peerConnection = event.target;
   const iceCandidate = event.candidate;
@@ -88,7 +72,7 @@ function handleConnection(event) {
     const newIceCandidate = new RTCIceCandidate(iceCandidate);
     const otherPeer = getOtherPeer(peerConnection);
 
-    otherPeer.addIceCandidate(newIceCandidate)
+    otherPeer.addIceCandidate(newIceCandidate) //创建ice候选
       .then(() => {
         handleConnectionSuccess(peerConnection);
       }).catch((error) => {
@@ -96,62 +80,55 @@ function handleConnection(event) {
       });
 
     trace(`${getPeerName(peerConnection)} ICE candidate:\n` +
-          `${event.candidate.candidate}.`);
+      `${event.candidate.candidate}.`);
   }
 }
 
-// Logs that the connection succeeded.
 function handleConnectionSuccess(peerConnection) {
   trace(`${getPeerName(peerConnection)} addIceCandidate success.`);
 };
 
-// Logs that the connection failed.
 function handleConnectionFailure(peerConnection, error) {
-  trace(`${getPeerName(peerConnection)} failed to add ICE Candidate:\n`+
-        `${error.toString()}.`);
+  trace(`${getPeerName(peerConnection)} failed to add ICE Candidate:\n` +
+    `${error.toString()}.`);
 }
 
-// Logs changes to the connection state.
 function handleConnectionChange(event) {
   const peerConnection = event.target;
   console.log('ICE state change event: ', event);
   trace(`${getPeerName(peerConnection)} ICE state: ` +
-        `${peerConnection.iceConnectionState}.`);
+    `${peerConnection.iceConnectionState}.`);
 }
 
-// Logs error when setting session description fails.
 function setSessionDescriptionError(error) {
   trace(`Failed to create session description: ${error.toString()}.`);
 }
 
-// Logs success when setting session description.
 function setDescriptionSuccess(peerConnection, functionName) {
   const peerName = getPeerName(peerConnection);
   trace(`${peerName} ${functionName} complete.`);
 }
 
-// Logs success when localDescription is set.
 function setLocalDescriptionSuccess(peerConnection) {
   setDescriptionSuccess(peerConnection, 'setLocalDescription');
 }
 
-// Logs success when remoteDescription is set.
 function setRemoteDescriptionSuccess(peerConnection) {
   setDescriptionSuccess(peerConnection, 'setRemoteDescription');
 }
 
-// Logs offer creation and sets peer connection session descriptions.
+//创建offer请求
 function createdOffer(description) {
   trace(`Offer from localPeerConnection:\n${description.sdp}`);
 
   trace('localPeerConnection setLocalDescription start.');
-  localPeerConnection.setLocalDescription(description)
+  localPeerConnection.setLocalDescription(description) //设置本地描述
     .then(() => {
       setLocalDescriptionSuccess(localPeerConnection);
     }).catch(setSessionDescriptionError);
 
   trace('remotePeerConnection setRemoteDescription start.');
-  remotePeerConnection.setRemoteDescription(description)
+  remotePeerConnection.setRemoteDescription(description) //由于是在同一个页面，直接将本地视频作为远程描述进行测试
     .then(() => {
       setRemoteDescriptionSuccess(remotePeerConnection);
     }).catch(setSessionDescriptionError);
@@ -162,7 +139,7 @@ function createdOffer(description) {
     .catch(setSessionDescriptionError);
 }
 
-// Logs answer to offer creation and sets peer connection session descriptions.
+//接收方创建回答
 function createdAnswer(description) {
   trace(`Answer from remotePeerConnection:\n${description.sdp}.`);
 
@@ -179,20 +156,13 @@ function createdAnswer(description) {
     }).catch(setSessionDescriptionError);
 }
 
-
-// Define and add behavior to buttons.
-
-// Define action buttons.
 const startButton = document.getElementById('startButton');
 const callButton = document.getElementById('callButton');
 const hangupButton = document.getElementById('hangupButton');
 
-// Set up initial action buttons status: disable call and hangup.
 callButton.disabled = true;
 hangupButton.disabled = true;
 
-
-// Handles start button action: creates local MediaStream.
 function startAction() {
   startButton.disabled = true;
   navigator.mediaDevices.getDisplayMedia(mediaStreamConstraints)
@@ -200,7 +170,7 @@ function startAction() {
   trace('Requesting local stream.');
 }
 
-// Handles call button action: creates peer connection.
+//获取本地视频，创建offer
 function callAction() {
   callButton.disabled = true;
   hangupButton.disabled = false;
@@ -208,7 +178,6 @@ function callAction() {
   trace('Starting call.');
   startTime = window.performance.now();
 
-  // Get local media stream tracks.
   const videoTracks = localStream.getVideoTracks();
   const audioTracks = localStream.getAudioTracks();
   if (videoTracks.length > 0) {
@@ -220,7 +189,7 @@ function callAction() {
 
   const servers = null;  // Allows for RTC server configuration.
 
-  // Create peer connections and add behavior.
+  //创建RTC连接
   localPeerConnection = new RTCPeerConnection(servers);
   trace('Created local peer connection object localPeerConnection.');
 
@@ -236,7 +205,7 @@ function callAction() {
     'iceconnectionstatechange', handleConnectionChange);
   remotePeerConnection.addEventListener('addstream', gotRemoteMediaStream);
 
-  // Add local stream to connection and create offer to connect.
+  // 将本地视频添加到RTC连接
   localPeerConnection.addStream(localStream);
   trace('Added local stream to localPeerConnection.');
 
@@ -245,7 +214,7 @@ function callAction() {
     .then(createdOffer).catch(setSessionDescriptionError);
 }
 
-// Handles hangup action: ends up call, closes connections and resets peers.
+//结束会话
 function hangupAction() {
   localPeerConnection.close();
   remotePeerConnection.close();
@@ -256,27 +225,22 @@ function hangupAction() {
   trace('Ending call.');
 }
 
-// Add click event handlers for buttons.
+//添加按钮点击的监听事件
 startButton.addEventListener('click', startAction);
 callButton.addEventListener('click', callAction);
 hangupButton.addEventListener('click', hangupAction);
 
-
-// Define helper functions.
-
-// Gets the "other" peer connection.
 function getOtherPeer(peerConnection) {
   return (peerConnection === localPeerConnection) ?
-      remotePeerConnection : localPeerConnection;
+    remotePeerConnection : localPeerConnection;
 }
 
-// Gets the name of a certain peer connection.
+//获取连接的名称
 function getPeerName(peerConnection) {
   return (peerConnection === localPeerConnection) ?
-      'localPeerConnection' : 'remotePeerConnection';
+    'localPeerConnection' : 'remotePeerConnection';
 }
 
-// Logs an action (text) and the time when it happened on the console.
 function trace(text) {
   text = text.trim();
   const now = (window.performance.now() / 1000).toFixed(3);

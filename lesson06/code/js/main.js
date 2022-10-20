@@ -10,7 +10,7 @@
 
 'use strict';
 
-// Call initModel() in demo.js, 定义webgl相关变量
+// 定义webgl相关变量
 initModel();
 
 const canvas = document.querySelector('canvas');
@@ -31,8 +31,6 @@ video.addEventListener('loadedmetadata', function () {
 
 video.onresize = () => {
   console.log(`Remote video size changed to ${video.videoWidth}x${video.videoHeight}`);
-  // We'll use the first onsize callback as an indication that video has started
-  // playing out.
   if (startTime) {
     const elapsedTime = window.performance.now() - startTime;
     console.log(`Setup time: ${elapsedTime.toFixed(3)}ms`);
@@ -40,6 +38,7 @@ video.onresize = () => {
   }
 };
 
+//将canvas中的内容作为本地视频流
 const stream = canvas.captureStream();
 console.log('Got stream from canvas');
 
@@ -57,16 +56,17 @@ function call() {
     console.log(`Using audio device: ${audioTracks[0].label}`);
   }
   const servers = null;
-  pc1 = new RTCPeerConnection(servers);
+  pc1 = new RTCPeerConnection(servers); //创建RTC连接
   console.log('Created local peer connection object pc1');
   pc1.onicecandidate = e => onIceCandidate(pc1, e);
   pc2 = new RTCPeerConnection(servers);
   console.log('Created remote peer connection object pc2');
-  pc2.onicecandidate = e => onIceCandidate(pc2, e);
+  pc2.onicecandidate = e => onIceCandidate(pc2, e); //创建ice候选
   pc1.oniceconnectionstatechange = e => onIceStateChange(pc1, e);
   pc2.oniceconnectionstatechange = e => onIceStateChange(pc2, e);
   pc2.ontrack = gotRemoteStream;
 
+  //把本地视频添加到RTC连接
   stream.getTracks().forEach(
     track => {
       pc1.addTrack(
@@ -78,6 +78,7 @@ function call() {
   console.log('Added local stream to pc1');
 
   console.log('pc1 createOffer start');
+  //发送方创建offer请求
   pc1.createOffer(onCreateOfferSuccess, onCreateSessionDescriptionError, offerOptions);
 }
 
@@ -92,9 +93,7 @@ function onCreateOfferSuccess(desc) {
   console.log('pc2 setRemoteDescription start');
   pc2.setRemoteDescription(desc, () => onSetRemoteSuccess(pc2), onSetSessionDescriptionError);
   console.log('pc2 createAnswer start');
-  // Since the 'remote' side has no media stream we need
-  // to pass in the right constraints in order for it to
-  // accept the incoming offer of audio and video.
+  //接收方创建应答
   pc2.createAnswer(onCreateAnswerSuccess, onCreateSessionDescriptionError);
 }
 
@@ -110,6 +109,7 @@ function onSetSessionDescriptionError(error) {
   console.log(`Failed to set session description: ${error.toString()}`);
 }
 
+//显示远程视频
 function gotRemoteStream(e) {
   if (video.srcObject !== e.streams[0]) {
     video.srcObject = e.streams[0];
@@ -120,13 +120,13 @@ function gotRemoteStream(e) {
 function onCreateAnswerSuccess(desc) {
   console.log(`Answer from pc2:\n${desc.sdp}`);
   console.log('pc2 setLocalDescription start');
-  pc2.setLocalDescription(desc, () => onSetLocalSuccess(pc2), onSetSessionDescriptionError);
+  pc2.setLocalDescription(desc, () => onSetLocalSuccess(pc2), onSetSessionDescriptionError); //设置本地描述
   console.log('pc1 setRemoteDescription start');
-  pc1.setRemoteDescription(desc, () => onSetRemoteSuccess(pc1), onSetSessionDescriptionError);
+  pc1.setRemoteDescription(desc, () => onSetRemoteSuccess(pc1), onSetSessionDescriptionError); //设置远程描述
 }
 
 function onIceCandidate(pc, event) {
-  getOtherPc(pc).addIceCandidate(event.candidate)
+  getOtherPc(pc).addIceCandidate(event.candidate) //添加ice候选
     .then(
       () => onAddIceCandidateSuccess(pc),
       err => onAddIceCandidateError(pc, err)

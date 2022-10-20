@@ -12,7 +12,7 @@ var startButton = document.querySelector('button#startButton');
 var sendButton = document.querySelector('button#sendButton');
 var closeButton = document.querySelector('button#closeButton');
 
-startButton.onclick = createConnection;
+startButton.onclick = createConnection; //监听按钮的点击事件
 sendButton.onclick = sendData;
 closeButton.onclick = closeDataChannels;
 
@@ -24,36 +24,34 @@ function disableSendButton() {
   sendButton.disabled = true;
 }
 
+//创建RTC连接
 function createConnection() {
   dataChannelSend.placeholder = '';
   var servers = null;
   pcConstraint = null;
   dataConstraint = null;
   trace('Using SCTP based data channels');
-  // For SCTP, reliable and ordered delivery is true by default.
-  // Add localConnection to global scope to make it visible
-  // from the browser console.
+
   window.localConnection = localConnection =
-      new RTCPeerConnection(servers, pcConstraint);
+    new RTCPeerConnection(servers, pcConstraint);
   trace('Created local peer connection object localConnection');
 
   sendChannel = localConnection.createDataChannel('sendDataChannel',
-      dataConstraint);
+    dataConstraint);
   trace('Created send data channel');
 
-  localConnection.onicecandidate = iceCallback1;
+  localConnection.onicecandidate = iceCallback1; //创建ice候选
   sendChannel.onopen = onSendChannelStateChange;
   sendChannel.onclose = onSendChannelStateChange;
 
-  // Add remoteConnection to global scope to make it visible
-  // from the browser console.
   window.remoteConnection = remoteConnection =
-      new RTCPeerConnection(servers, pcConstraint);
+    new RTCPeerConnection(servers, pcConstraint);
   trace('Created remote peer connection object remoteConnection');
 
   remoteConnection.onicecandidate = iceCallback2;
   remoteConnection.ondatachannel = receiveChannelCallback;
 
+  //发送方创建offer请求
   localConnection.createOffer().then(
     gotDescription1,
     onCreateSessionDescriptionError
@@ -72,6 +70,7 @@ function sendData() {
   trace('Sent Data: ' + data);
 }
 
+//关闭数据通道
 function closeDataChannels() {
   trace('Closing data channels');
   sendChannel.close();
@@ -93,6 +92,7 @@ function closeDataChannels() {
   enableStartButton();
 }
 
+//设置本地描述
 function gotDescription1(desc) {
   localConnection.setLocalDescription(desc);
   trace('Offer from localConnection \n' + desc.sdp);
@@ -103,6 +103,7 @@ function gotDescription1(desc) {
   );
 }
 
+//设置远程描述
 function gotDescription2(desc) {
   remoteConnection.setLocalDescription(desc);
   trace('Answer from remoteConnection \n' + desc.sdp);
@@ -143,6 +144,7 @@ function onAddIceCandidateError(error) {
   trace('Failed to add Ice Candidate: ' + error.toString());
 }
 
+//数据通道收到数据
 function receiveChannelCallback(event) {
   trace('Receive Channel Callback');
   receiveChannel = event.channel;
@@ -156,6 +158,7 @@ function onReceiveMessageCallback(event) {
   dataChannelReceive.value = event.data;
 }
 
+//发送数据
 function onSendChannelStateChange() {
   var readyState = sendChannel.readyState;
   trace('Send channel state is: ' + readyState);
@@ -176,6 +179,7 @@ function onReceiveChannelStateChange() {
   trace('Receive channel state is: ' + readyState);
 }
 
+//打印log日志
 function trace(text) {
   if (text[text.length - 1] === '\n') {
     text = text.substring(0, text.length - 1);

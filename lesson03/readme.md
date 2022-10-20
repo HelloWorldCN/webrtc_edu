@@ -107,6 +107,7 @@
 
 ### 1.拨打视频:
 ###### 浏览器中通过http协议打开 index.html页面, 单击 Start 按钮获取摄像头的视频, 之后点击 Call 按钮来建立对等连接(peer connection)。 如果连接成功, 那么就可以在两个 video 中中看到同样的画面. 请打开浏览器的控制台, 查看 WebRTC 相关的日志信息。
+![03-1](https://github.com/HelloWorldCN/webrtc_edu/blob/master/images/03-1.png)![03-2](https://github.com/HelloWorldCN/webrtc_edu/blob/master/images/03-2.png)
 ### 2.原理简介:
 #### [1] 通过 RTCPeerConnection, 可以在 WebRTC 客户端之间创建连接, 来传输流媒体视频, 每个客户端就是一个端点(peer)。
 ##### 本节的示例中, 两个 RTCPeerConnection 对象在同一个页面中: 即 pc1 和 pc2。 所以并没有什么实际价值, 只是用来演示api的使用。

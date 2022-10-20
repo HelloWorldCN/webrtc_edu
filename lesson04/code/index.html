@@ -13,14 +13,18 @@
 
   <h1>Realtime communication with WebRTC</h1>
 
-  <textarea id="dataChannelSend" disabled
-    placeholder="Press Start, enter some text, then press Send."></textarea>
+  <textarea id="dataChannelSend" disabled placeholder="Press Start, enter some text, then press Send."></textarea>
+  <!--发送方编辑框-->
   <textarea id="dataChannelReceive" disabled></textarea>
+  <!--接收方显示框-->
 
   <div id="buttons">
     <button id="startButton">Start</button>
+    <!--开启RTC会话-->
     <button id="sendButton">Send</button>
+    <!--发送数据-->
     <button id="closeButton">Stop</button>
+    <!--结束会话-->
   </div>
 
   <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>

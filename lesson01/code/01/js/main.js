@@ -8,13 +8,14 @@ var pc;
 var remoteStream;
 var turnReady;
 
+//打洞服务器地址
 var pcConfig = {
   'iceServers': [{
     'urls': 'stun:stun.l.google.com:19302'
   }]
 };
 
-// Set up audio and video regardless of what devices are present.
+//同时接收视频和音频
 var sdpConstraints = {
   offerToReceiveAudio: true,
   offerToReceiveVideo: true
@@ -23,8 +24,6 @@ var sdpConstraints = {
 /////////////////////////////////////////////
 
 var room = 'foo';
-// Could prompt for room name:
-// room = prompt('Enter room name:');
 
 var socket = io.connect();
 
@@ -33,27 +32,29 @@ if (room !== '') {
   console.log('Attempted to create or  join room', room);
 }
 
-socket.on('created', function(room) {
+//接收到创建房间的信令
+socket.on('created', function (room) {
   console.log('Created room ' + room);
   isInitiator = true;
 });
 
-socket.on('full', function(room) {
+socket.on('full', function (room) {
   console.log('Room ' + room + ' is full');
 });
 
-socket.on('join', function (room){
+//加入房间
+socket.on('join', function (room) {
   console.log('Another peer made a request to join room ' + room);
   console.log('This peer is the initiator of room ' + room + '!');
   isChannelReady = true;
 });
 
-socket.on('joined', function(room) {
+socket.on('joined', function (room) {
   console.log('joined: ' + room);
   isChannelReady = true;
 });
 
-socket.on('log', function(array) {
+socket.on('log', function (array) {
   console.log.apply(console, array);
 });
 
@@ -64,8 +65,8 @@ function sendMessage(message) {
   socket.emit('message', message);
 }
 
-// This client receives a message
-socket.on('message', function(message) {
+//客户端收到信息
+socket.on('message', function (message) {
   console.log('Client received message:', message);
   if (message === 'got user media') {
     maybeStart();
@@ -90,17 +91,18 @@ socket.on('message', function(message) {
 
 ////////////////////////////////////////////////////
 
-var localVideo = document.querySelector('#localVideo');
-var remoteVideo = document.querySelector('#remoteVideo');
+var localVideo = document.querySelector('#localVideo'); //显示本地视频
+var remoteVideo = document.querySelector('#remoteVideo'); //显示远程视频
 
+//尝试获取机器的视频信息
 navigator.mediaDevices.getUserMedia({
   audio: false,
   video: true
 })
-.then(gotStream)
-.catch(function(e) {
-  alert('getUserMedia() error: ' + e.name);
-});
+  .then(gotStream)
+  .catch(function (e) {
+    alert('getUserMedia() error: ' + e.name);
+  });
 
 function gotStream(stream) {
   console.log('Adding local stream.');
@@ -138,12 +140,13 @@ function maybeStart() {
   }
 }
 
-window.onbeforeunload = function() {
+window.onbeforeunload = function () {
   sendMessage('bye');
 };
 
 /////////////////////////////////////////////////////////
 
+//创建一个RTC连接
 function createPeerConnection() {
   try {
     pc = new RTCPeerConnection(null);
@@ -158,6 +161,7 @@ function createPeerConnection() {
   }
 }
 
+//创建ice候选
 function handleIceCandidate(event) {
   console.log('icecandidate event: ', event);
   if (event.candidate) {
@@ -176,9 +180,10 @@ function handleCreateOfferError(event) {
   console.log('createOffer() error: ', event);
 }
 
+//呼叫者创建一个offer
 function doCall() {
   console.log('Sending offer to peer');
-  pc.createOffer(setLocalAndSendMessage, handleCreateOfferError);
+  pc.createOffer(setLocalAndSendMessage, handleCreateOfferError); //将offer设置为本地描述
 }
 
 function doAnswer() {
@@ -199,6 +204,7 @@ function onCreateSessionDescriptionError(error) {
   trace('Failed to create session description: ' + error.toString());
 }
 
+//请求打洞服务器地址
 function requestTurn(turnURL) {
   var turnExists = false;
   for (var i in pcConfig.iceServers) {
@@ -210,9 +216,8 @@ function requestTurn(turnURL) {
   }
   if (!turnExists) {
     console.log('Getting TURN server from ', turnURL);
-    // No TURN server. Get one from computeengineondemand.appspot.com:
     var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function() {
+    xhr.onreadystatechange = function () {
       if (xhr.readyState === 4 && xhr.status === 200) {
         var turnServer = JSON.parse(xhr.responseText);
         console.log('Got TURN server: ', turnServer);
@@ -228,6 +233,7 @@ function requestTurn(turnURL) {
   }
 }
 
+//显示接收的远程视频
 function handleRemoteStreamAdded(event) {
   console.log('Remote stream added.');
   remoteStream = event.stream;

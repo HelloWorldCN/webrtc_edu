@@ -216,6 +216,6 @@ function onIceCandidate(pc, event) {
 
 ## 效果展示
 打开code文件中的index页面，会出现两个两个video元素，左边的代表本地，右边代表从canvas到传输过去的画面，当我们拖动左边的模型时，右边的也会随之改变。  
-![image](./code6/image/example.png)
+![06](https://github.com/HelloWorldCN/webrtc_edu/blob/master/images/06.png)
 ## 总结
 在本节中主要是通过通过webrtc来实现canvas画布画面的传输，其本质上和webrtc的视频通话没有区别，但是本节设计3d模型和和展现方式都十分简单，感兴趣的可以尝试使用Three.js来绘制更加复杂多样的3d模型，甚至加入标记识别来展示不同模型。
