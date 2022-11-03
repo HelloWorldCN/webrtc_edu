@@ -156,5 +156,6 @@ com/privkey.pem; # managed by Certbot
 cd /home/ubuntu/janus/build/bin
 2 ./janus
 ```
+![02-2](https://github.com/HelloWorldCN/webrtc_edu/blob/master/images/02-2.png)
 ## 总结
 janus安装部署本身并不复杂，但是所需要的环境依赖较多，而且版本要求严格，很多依赖版本新或者旧都会出问题，这一点要格外注意。
