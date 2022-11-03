@@ -32,3 +32,10 @@
 
 - 网页会渲染一个3D模型，然后在右边是该模型的远程视频显示，拖动左边的模型可以改变模型的展示角度，实验结果如下图所示。
   ![06](https://github.com/HelloWorldCN/webrtc_edu/blob/master/images/06.png)
+
+
+# 致谢
+
+感谢Google教育部协同育人项目的资助。
+
+感谢孙同学、李同学、向同学对本项目的帮助。
