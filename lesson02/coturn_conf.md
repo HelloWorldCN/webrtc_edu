@@ -56,5 +56,6 @@ pkey=【使用openssl生成的pkey的路径】
 ```
 sudo turnserver ‐o ‐c /usr/local/etc/turnserver.conf
 ```
+![02-1](https://github.com/HelloWorldCN/webrtc_edu/blob/master/images/02-1.png)
 ## 总结
 cotrun的配置并不难，但是要注意配置文件的修改，要根据自己网络环境的实际情况设置
