@@ -1,10 +1,13 @@
 # 本节内容
+
 coturn服务器安装
+
 ## 安装libevnet
 
 ```
 sudo apt‐get install libevent‐dev
 ```
+
 ## 使用源码安装libevent-dev
 
 ```
@@ -13,6 +16,7 @@ cd libevent‐2.1.8‐stable
 ./configure && make
  sudo make install
 ```
+
 ## 安装coturn
 
 ```
@@ -22,7 +26,9 @@ cd libevent‐2.1.8‐stable
  cd /usr/local/etc
  sudo cp turnserver.conf.default turnserver.conf
 ```
+
 ## 签名证书
+
 使用命令安装openssl
 
 ```
@@ -34,11 +40,13 @@ cert和pkey配置的自签名证书用Openssl命令生成:
 ```
 openssl req -x509 -newkey rsa:2048 -keyout /etc/turn_server_pkey.pem -out /etc/turn_server_cert.pem -days 99999 -nodes 
 ```
+
 ## 修改配置信息
 
 ```
 vi /usr/local/etc/turnserver.conf
 ```
+
 打开配置文件之后，找到以下参数并根据自己网络环境修改
 
 ```
@@ -51,11 +59,25 @@ realm=XXXXXXX
 cert=【使用openssl生成的cert的路径】
 pkey=【使用openssl生成的pkey的路径】
 ```
+
 启动coturn
 
 ```
 sudo turnserver ‐o ‐c /usr/local/etc/turnserver.conf
 ```
+
 ![02-1](https://github.com/HelloWorldCN/webrtc_edu/blob/master/images/02-1.png)
+
 ## 总结
+
 cotrun的配置并不难，但是要注意配置文件的修改，要根据自己网络环境的实际情况设置
+
+## 参考文献
+
+1. [WebRTC samples](https://webrtc.github.io/samples/)
+2. [codelab WebRTC](https://codelabs.developers.google.com/codelabs/webrtc-web/)
+3. [coturn 简介](https://blog.csdn.net/fengfengdiandia/article/details/86495447)
+4. [Trickle ICE测试打洞服务器功能](https://webrtc.github.io/samples/src/content/peerconnection/trickle-ice/)
+
+* [WebRTC samples](https://webrtc.github.io/samples/)
+* [codelab WebRT](https://codelabs.developers.google.com/codelabs/webrtc-web/)

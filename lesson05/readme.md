@@ -123,3 +123,9 @@ localPeerConnection.addStream(localStream);
 ## 本章小结
 
 基于WebRTC实现桌面共享，逻辑上和建立视频通话是一样的，原理也是相同，都是建立一个对等连接，将获取到的媒体信息放入传输通道中， 区别只是在获取本地媒体流的模块。
+
+
+## 参考文献
+
+1. [WebRTC samples](https://webrtc.github.io/samples/)
+2. [codelab WebRTC](https://codelabs.developers.google.com/codelabs/webrtc-web/)

@@ -135,3 +135,10 @@ RTCDataChannel 其提供了 send() 方法与 message 事件, 使用的语法和 
 
 在两个WebRTC客户端之间创建连接。
 在客户端之间传输文本数据。
+
+
+
+## 参考文献
+
+1. [WebRTC samples](https://webrtc.github.io/samples/)
+2. [codelab WebRTC](https://codelabs.developers.google.com/codelabs/webrtc-web/)

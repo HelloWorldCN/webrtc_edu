@@ -257,3 +257,10 @@ function createdAnswer(description) {
     }).catch(setSessionDescriptionError);
 }
 ```
+
+## 参考文献
+
+1. [WebRTC samples](https://webrtc.github.io/samples/)
+2. [codelab WebRTC](https://codelabs.developers.google.com/codelabs/webrtc-web/)
+3. [移动终端编程](https://docs.qq.com/doc/DVnd6dnRxWUJKdWN6?&u=341683fbb6de45c4a5064ecbc30eca06)
+4. [Chrome 高版本中非https无法打开摄像头 和 录音功能](https://www.cnblogs.com/Sabo-dudu/p/12449985.html#:~:text=1.%20在%20chrome%20中%20输入%20chrome%3A%2F%2Fflags%2F%23unsafely-treat-insecure-origin-as-secure%202.%20查找,treated%20as%20secure%20属性%203.%20添加你要信任的地址%20例如：http%3A%2F%2F%20192.168.1.8%3A8080)

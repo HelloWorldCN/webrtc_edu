@@ -1,12 +1,21 @@
 # 本节内容
+
 一个开源WebRTC网关的部署
+
 ## janus介绍
+
 Janus 是由Meetecho设计和开发的开源、通用的基于SFU架构的WebRTC流媒体服务器，它支持在Linux的服务器或MacOS上的机器进行编译和安装。由于Janus 是使用C语言进行编写的，因此它的性能十分优秀
+
 ## janus安装部署
-### 安装环境  
+
+### 安装环境
+
 janus可以安装在linux系统中，centos、ubuntu等都可以，本节使用的是ubuntu 16.04的系统
+
 ### 安装依赖
+
 在安装janus之前需要安装一系列的依赖
+
 #### 安装基础软件
 
 ```
@@ -21,7 +30,8 @@ e unzip wget
  sudo apt install cmake
  sudo apt‐get install gtk‐doc‐tools
 ```
-####  安装libnice
+
+#### 安装libnice
 
 ```
  sudo git clone https://gitlab.freedesktop.org/libnice/libnice
@@ -30,6 +40,7 @@ e unzip wget
  sudo ./configure ‐‐prefix=/usr
  sudo make && sudo make install
 ```
+
 #### 安装libsrtp
 
 ```
@@ -38,6 +49,7 @@ e unzip wget
 3 sudo ./configure ‐‐prefix=/usr ‐‐enable‐openssl
 4 sudo make shared_library && sudo make install
 ```
+
 #### 安装usrsctp
 
 ```
@@ -46,6 +58,7 @@ e unzip wget
 3 sudo ./bootstrap
 4 sudo ./configure ‐‐prefix=/usr && sudo make && sudo make install
 ```
+
 #### 安装libwebsockets
 
 ```
@@ -58,6 +71,7 @@ e unzip wget
 FLAGS="‐fpic" ..
 7 sudo make && sudo make install
 ```
+
 ### 安装Janus
 
 ```
@@ -74,6 +88,7 @@ FLAGS="‐fpic" ..
 11 sudo ./configure ‐‐disable‐websockets ‐‐disable‐data‐channels ‐‐disabl
 e‐rabbitmq ‐‐disable‐mqtt
 ```
+
 ### 修改videoRoom的配置文件
 
 ```
@@ -91,6 +106,7 @@ e‐rabbitmq ‐‐disable‐mqtt
 12 ice_enforce_list = "eth0"
 13 }
 ```
+
 ### certbot HTTPS证书
 
 ```
@@ -156,6 +172,16 @@ com/privkey.pem; # managed by Certbot
 cd /home/ubuntu/janus/build/bin
 2 ./janus
 ```
+
 ![02-2](https://github.com/HelloWorldCN/webrtc_edu/blob/master/images/02-2.png)
+
 ## 总结
+
 janus安装部署本身并不复杂，但是所需要的环境依赖较多，而且版本要求严格，很多依赖版本新或者旧都会出问题，这一点要格外注意。
+
+## 参考文献
+
+1. [WebRTC samples](https://webrtc.github.io/samples/)
+2. [codelab WebRTC](https://codelabs.developers.google.com/codelabs/webrtc-web/)
+3. [ubuntu下编译安装libwebsockets](https://blog.csdn.net/weixin_39510813/article/details/82527788)
+4. [ubuntu 安装janus](https://blog.csdn.net/weixin_44784018/article/details/114281967)

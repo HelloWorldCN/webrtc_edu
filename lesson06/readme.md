@@ -251,3 +251,13 @@ function onIceCandidate(pc, event) {
 ## 总结
 
 在本节中主要是通过通过webrtc来实现canvas画布画面的传输，其本质上和webrtc的视频通话没有区别，但是本节设计3d模型和和展现方式都十分简单，感兴趣的可以尝试使用Three.js来绘制更加复杂多样的3d模型，甚至加入标记识别来展示不同模型。
+
+
+
+## 参考文献
+
+1. [WebRTC samples](https://webrtc.github.io/samples/)
+2. [codelab WebRTC](https://codelabs.developers.google.com/codelabs/webrtc-web/)
+3. [免费的3D资源网站](https://sketchfab.com/3d-models?features=downloadable&sort_by=-likeCount&cursor=cD0xNjc1)
+4. [数据可视化——webGL入门](https://zhuanlan.zhihu.com/p/407120451)
+5. [网页3D模型渲染](https://threejs.org/docs/index.html#manual/en/introduction/Creating-a-scene)
